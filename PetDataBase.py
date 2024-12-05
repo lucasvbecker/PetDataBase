@@ -5,6 +5,7 @@ class Pet:
         self.name = name
         self.age = age
 
+
 class PetDatabase:
     # Adding, updating, removing, displaying, and searching pets
     def __init__(self):
@@ -21,13 +22,20 @@ class PetDatabase:
             return
 
         # Header for table
-        print("+------------------------+\n| ID  | NAME      | AGE  |\n+------------------------+")
+        print("+-------------------------+\n| ID  | NAME       | AGE  |\n+-------------------------+")
         # Display each pet in list
         for i, pet in enumerate(self.pets):
-            print(f"| {i:3} | {pet.name:<9} | {pet.age:4} |")
+            print(f"| {i:3} | {pet.name:<10} | {pet.age:4} |")
         # Footer and total rows
-        print(f"+------------------------+\n{len(self.pets)} rows in set.")
+        print(f"+-------------------------+\n{len(self.pets)} rows in set.")
 
+    # Updates existing pet info
+    def update_pet(self, pet_id, new_name, new_age):
+        if 0 <= pet_id < len(self.pets):
+            self.pets[pet_id].name = new_name
+            self.pets[pet_id].age = new_age
+        else:
+            print("Invalid pet ID.")
 
     # Search pets by name
     def search_pet_by_name(self, name):
@@ -53,6 +61,14 @@ class PetDatabase:
         # Footer and total rows
         print(f"+------------------------+\n{len(pets)} rows in set.")
 
+    # Remove pet
+    def remove_pet(self, pet_id):
+        if 0 <= pet_id < len(self.pets):
+            removed_pet = self.pets.pop(pet_id)
+            print(f"{removed_pet.name} is removed.")
+        else:
+            print("Invalid pet ID.")
+
 
 #MAIN FUNCTION
 def main():
@@ -63,6 +79,8 @@ def main():
         print("\nWhat would you like to do?")
         print("1) View all pets")
         print("2) Add more pets")
+        print("3) Update an existing pet")
+        print("4) Remove an existing pet")
         print("5) Search pets by name")
         print("6) Search pets by age")
         print("7) Exit program\n")
@@ -83,6 +101,20 @@ def main():
                 name, age = pet_info.split()
                 db.add_pet(name, int(age))
 
+        # Update existing pet
+        elif choice == "3":
+            db.show_pets()
+            pet_id = int(input("Enter the pet ID you want to update: "))
+            new_name = input("Enter new name: ")
+            new_age = int(input("Enter new age: "))
+            db.update_pet(pet_id, new_name, new_age)
+
+        # Remove existing pet
+        elif choice == "4":
+            db.show_pets()
+            pet_id = int(input("Enter the pet ID to remove: "))
+            db.remove_pet(pet_id)
+
         # Search pets by name
         elif choice == "5":
             name = input("Enter a name to search: ")
@@ -95,7 +127,7 @@ def main():
 
         # Exit the program
         elif choice == "7":
-            print("Goodbye!")
+            print("Goodbye!\n")
             break
         else:
             #INVALID CHOICE
